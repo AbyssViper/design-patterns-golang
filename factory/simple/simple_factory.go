@@ -1,4 +1,4 @@
-package factory
+package simple
 
 import "fmt"
 
@@ -7,18 +7,19 @@ type Alert interface {
 }
 
 func NewAlert(alertType string) Alert {
-	if alertType == "mail" {
+	switch alertType {
+	case "mail":
 		return &Mail{}
-	} else if alertType == "wechat" {
+	case "wechat":
 		return &WeChat{}
-	// 横向拓展后，通过添加到生产入口并增加标识，即可
-	} else if alertType == "sms" {
+	case "sms":
 		return &SMS{}
-	} else {
+	default:
 		return nil
 	}
 }
 
+// Product Mail
 type Mail struct {
 }
 
@@ -26,6 +27,7 @@ func (m *Mail) Send(message string) {
 	fmt.Println("mail send success, message:", message)
 }
 
+// Product WeChat
 type WeChat struct {
 }
 
@@ -33,9 +35,9 @@ func (w *WeChat) Send(message string) {
 	fmt.Println("wechat send success, message:", message)
 }
 
+// Product SMS
 // 如果拓展短信业务，增加相关结构体，并实现相关接口
 type SMS struct {
-
 }
 
 func (S *SMS) Send(message string) {
